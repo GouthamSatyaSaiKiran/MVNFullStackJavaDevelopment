@@ -1,5 +1,6 @@
 package com.MVNFullStackProject.controller;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import com.MVNFullStackProject.entity.MechanicRequest;
 
 @RestController
 @RequestMapping("/mechanic")
+@CrossOrigin(origins = "http://localhost:3000")
 public class MechanicController {
 
     @Autowired
@@ -24,6 +26,9 @@ public class MechanicController {
 
     @PostMapping("/request")
     public ResponseEntity<String> requestService(@RequestBody MechanicRequest request) {
+        if (request.getBookingTime() == null) {
+            request.setBookingTime(LocalDateTime.now());
+        }
         return ResponseEntity.ok(mechanicService.request(request));
     }
 

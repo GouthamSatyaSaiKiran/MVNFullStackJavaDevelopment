@@ -2,6 +2,7 @@ package com.MVNFullStackProject.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "mechanic_requests")
@@ -14,12 +15,15 @@ public class MechanicRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    private String name;
 
-    private String issueType;
+    private String mobile;
 
-    private String vehicleNumber;
+    private String issue;
+    
+    private String location;
+
+    private LocalDateTime bookingTime; 
 
     private String status;
 }
-

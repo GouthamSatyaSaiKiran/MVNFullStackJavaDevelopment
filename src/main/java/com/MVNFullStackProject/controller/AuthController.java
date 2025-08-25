@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
     @Autowired
@@ -21,7 +21,12 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserDTO dto) {
-        return ResponseEntity.ok(service.register(dto));
+        try {
+            User registeredUser = service.register(dto);
+            return ResponseEntity.ok("User registered successfully: " + registeredUser.getName());
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().body("Registration failed: " + ex.getMessage());
+        }
     }
 
     @PostMapping("/login")
@@ -40,14 +45,17 @@ public class AuthController {
     public ResponseEntity<?> forgot(@RequestBody UserDTO dto) {
         String email = dto.getEmail();
         String token = service.initiatePasswordReset(email);
-        return token != null ? ResponseEntity.ok("Reset token: " + token)
-                             : ResponseEntity.badRequest().body("Email not found");
+        return token != null
+                ? ResponseEntity.ok("Reset token: " + token)
+                : ResponseEntity.badRequest().body("Email not found");
     }
 
     @PostMapping("/reset")
     public ResponseEntity<?> reset(@RequestBody ResetRequestDTO request) {
         boolean result = service.resetPassword(request.getToken(), request.getNewPassword());
-        return result ? ResponseEntity.ok("Password reset successfully")
-                      : ResponseEntity.badRequest().body("Invalid token");
+        return result
+                ? ResponseEntity.ok("Password reset successfully")
+                : ResponseEntity.badRequest().body("Invalid token");
     }
 }
+

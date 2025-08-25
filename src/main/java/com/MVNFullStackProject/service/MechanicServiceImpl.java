@@ -14,6 +14,10 @@ public class MechanicServiceImpl implements MechanicService {
     @Override
     public String request(MechanicRequest request) {
         request.setStatus("Pending");
+        if (request.getBookingTime() == null) {
+            request.setBookingTime(java.time.LocalDateTime.now());
+        }
+
         repo.save(request);
         return "Mechanic request submitted successfully!";
     }
@@ -25,4 +29,3 @@ public class MechanicServiceImpl implements MechanicService {
                    .orElse("Request not found");
     }
 }
-

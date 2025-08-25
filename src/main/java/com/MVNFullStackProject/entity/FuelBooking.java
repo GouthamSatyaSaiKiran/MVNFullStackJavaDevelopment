@@ -23,17 +23,18 @@ public class FuelBooking {
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long id;
 
-	    private Long userId;
+	    private String name;
+	    
+	    private String mobile;
 
 	    private String fuelType;
 
 	    private double quantity;
+	    
+	    private String location;
 
 	    private LocalDateTime bookingTime;
 
 	    private String status;
 
-	    private Long branchId;
-
-	    private String vehicleNumber;
 }

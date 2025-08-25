@@ -23,11 +23,16 @@ public class UserService {
     private PasswordEncoder encoder;
 
     public User register(UserDTO dto) {
+        Optional<User> existingUser = repo.findByEmail(dto.getEmail());
+        if (existingUser.isPresent()) {
+            throw new RuntimeException("Email already in use");
+        }
+
         User user = new User();
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setPassword(encoder.encode(dto.getPassword()));
-        user.setPhone(dto.getPhone());
+        user.setMobile(dto.getMobile());
         user.setAddress(dto.getAddress());
         user.setRole(dto.getRole());
         return repo.save(user);
