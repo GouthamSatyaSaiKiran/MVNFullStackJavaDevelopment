@@ -8,7 +8,6 @@ function CardContainer() {
         image="https://5.imimg.com/data5/GL/WP/GLADMIN-57624007/fuel-delivery-services-1000x1000.png"
         title="Fuel Service"
         description="Running low? We'll bring fuel directly to your location, day or night, so you can get back on the road without delay."
-        link="/fuelownerdashboard"
       />
 
       <Card

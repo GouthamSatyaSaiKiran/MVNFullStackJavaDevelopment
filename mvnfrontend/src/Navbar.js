@@ -1,14 +1,12 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 function Navbar({ isLoggedIn, setIsLoggedIn, userRole }) {
   const navigate = useNavigate();
   const location = useLocation();
-
-  const isHomePage = location.pathname === '/';
 
   const handleLogout = () => {
     localStorage.removeItem('userRole');
@@ -23,24 +21,25 @@ function Navbar({ isLoggedIn, setIsLoggedIn, userRole }) {
     return null;
   };
 
+  const isHomePage = location.pathname === '/';
+
   return (
     <>
-      {/* ---------- NAVBAR ---------- */}
-      <nav id="home">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+      {/* ----------- NAVBAR ----------- */}
+      <nav id='home'>
+        <div className="logo-container">
           <img src="/img.jpg" alt="Logo" className="logo" id="img" />
         </div>
-        <div id="txt">
-          <h2>Mobile Vehicle Needs</h2>
+        <div id='txt'>
+          <h1 style={{ marginLeft: "10px" }}>Mobile Vehicle Needs</h1>
         </div>
-        <div id="t">
+        <div id='t'>
           <Link to="/">HOME</Link>
           <HashLink smooth to="/#about">ABOUT</HashLink>
           <HashLink smooth to="/#services">SERVICES</HashLink>
-
           {isLoggedIn ? (
             <>
-              {getDashboardPath() && <Link to={getDashboardPath()}>REQUEST</Link>}
+              {getDashboardPath() && <Link to={getDashboardPath()}>REQUESTS</Link>}
               <button onClick={handleLogout}>LOGOUT</button>
             </>
           ) : (
@@ -54,7 +53,7 @@ function Navbar({ isLoggedIn, setIsLoggedIn, userRole }) {
         </div>
       </nav>
 
-      {/* ---------- CAROUSEL ONLY ON HOME PAGE ---------- */}
+      {/* ----------- SHOW CAROUSEL ONLY ON HOME PAGE ----------- */}
       {isHomePage && (
         <div className="carousel-container">
           <Carousel
@@ -62,8 +61,8 @@ function Navbar({ isLoggedIn, setIsLoggedIn, userRole }) {
             infiniteLoop
             showThumbs={false}
             showStatus={false}
-            interval={2000}
-            transitionTime={1000}
+            interval={3000}
+            transitionTime={800}
           >
             <div>
               <img
@@ -79,13 +78,6 @@ function Navbar({ isLoggedIn, setIsLoggedIn, userRole }) {
               />
               <p className="legend">Quick Mechanic Assistance</p>
             </div>
-            {/* <div>
-              <img
-                src="https://via.placeholder.com/1200x400/10b981/ffffff?text=24x7+Towing+Service"
-                alt="Towing Service"
-              />
-              <p className="legend">24x7 Towing Service</p>
-            </div> */}
           </Carousel>
         </div>
       )}

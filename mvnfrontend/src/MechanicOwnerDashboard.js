@@ -4,8 +4,7 @@ import {
 } from 'recharts';
 import { parseISO, isToday, isThisWeek, isThisMonth } from 'date-fns';
 
-function MechanicOwnerDashboard() {
-  const [requests, setRequests] = useState([]);
+function MechanicOwnerDashboard({ requests = [], setRequests }) {
   const [stats, setStats] = useState({
     total: 0,
     daily: 0,
@@ -15,6 +14,7 @@ function MechanicOwnerDashboard() {
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
+  // Load mechanic requests from localStorage on mount
   useEffect(() => {
     const savedRequests = localStorage.getItem('vehicleRequests');
     if (savedRequests) {
@@ -31,6 +31,7 @@ function MechanicOwnerDashboard() {
     }
   }, []);
 
+  // Save requests to localStorage whenever updated
   useEffect(() => {
     localStorage.setItem('vehicleRequests', JSON.stringify(requests));
   }, [requests]);
@@ -85,53 +86,69 @@ function MechanicOwnerDashboard() {
   ];
 
   return (
-    <div style={{ padding: '20px', marginTop: '50px' }}>
-      <div style={{ display: 'flex', gap: '20px' }}>
-        <div style={{
-          flex: '1',
-          minWidth: '300px',
-          background: '#fff',
-          borderRadius: '8px',
-          padding: '10px'
-        }}>
-          <h3 style={{ textAlign: 'center' }}>Service Stats</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart>
-              <Pie
-                data={pieData}
-                dataKey="value"
-                nameKey="name"
-                outerRadius={80}
-                fill="#8884d8"
-                label
-              >
-                {pieData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
+    <div>
+      <h1 style={{ textAlign: 'center', marginTop: '50px', marginBottom: '10px' }}>
+        Mechanic Requests Summary
+      </h1>
 
-        <div style={{ flex: '2' }}>
-          <div style={{
-            marginBottom: '20px',
-            padding: '10px',
-            backgroundColor: '#fff',
-            borderRadius: '8px',
-          }}>
-            <h2>Completed Services Summary</h2>
+      <div style={{ padding: '20px', marginTop: '20px' }}>
+        <div style={{ display: 'flex', gap: '20px', marginBottom: '30px' }}>
+          <div
+            style={{
+              flex: '1',
+              minWidth: '300px',
+              backgroundColor: '#fff',
+              borderRadius: '8px',
+              padding: '15px',
+              textAlign: 'center',
+            }}
+          >
+            <h2 style={{ color: '#0f172a', marginBottom: '20px' }}>Total Mechanic Services Summary</h2>
             <p><strong>Total:</strong> {stats.total}</p>
             <p><strong>Today:</strong> {stats.daily}</p>
             <p><strong>This Week:</strong> {stats.weekly}</p>
             <p><strong>This Month:</strong> {stats.monthly}</p>
           </div>
 
-          <h1 style={{ textAlign: 'center' }}>Mechanic Requests</h1>
+          <div
+            style={{
+              flex: '1',
+              minWidth: '300px',
+              background: '#fff',
+              borderRadius: '8px',
+              padding: '10px',
+            }}
+          >
+            <h3 style={{ textAlign: 'center' }}>Mechanic Service Stats</h3>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie
+                  data={pieData}
+                  dataKey="value"
+                  nameKey="name"
+                  outerRadius={80}
+                  fill="#8884d8"
+                  label
+                >
+                  {pieData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div>
+          <h2 style={{ textAlign: 'center' }}>Mechanic Requests' Details</h2>
+
           {requests
-            ?.filter((req) => req.service === 'Mechanic Help')
+            .filter((req) => req.service === 'Mechanic Help')
             .map((req) => (
               <div
                 key={req.id}
@@ -139,27 +156,37 @@ function MechanicOwnerDashboard() {
                   background: '#f9f9f9',
                   padding: '10px',
                   borderRadius: '8px',
-                  marginBottom: '10px'
+                  marginBottom: '10px',
                 }}
               >
                 <h4>{req.name}</h4>
+                <p><strong>Phone:</strong> {req.mobile}</p>
                 <p><strong>Issue:</strong> {req.issue}</p>
                 <p><strong>Location:</strong> {req.location}</p>
                 <p>
-                  <strong>Status:</strong>{" "}
-                  <span style={{
-                    color: req.status === 'Accepted' ? 'green' :
-                      req.status === 'Rejected' ? 'red' :
-                        'orange'
-                  }}>
+                  <strong>Status:</strong>{' '}
+                  <span
+                    style={{
+                      color:
+                        req.status === 'Accepted'
+                          ? 'green'
+                          : req.status === 'Rejected'
+                          ? 'red'
+                          : 'orange',
+                    }}
+                  >
                     {req.status}
                   </span>
                 </p>
 
                 {req.status === 'Accepted' && (
                   <>
-                    <p><strong>ETA:</strong> {req.eta} minutes</p>
-                    <p><strong>Delivery Location:</strong> Lat: {req.deliveryLocation.lat}, Lng: {req.deliveryLocation.lng}</p>
+                    <p><strong>ETA:</strong> {req.eta} Minutes</p>
+                    <p>
+                      <strong>Delivery Location:</strong> Lat:{' '}
+                      {req.deliveryLocation.lat}, Lng:{' '}
+                      {req.deliveryLocation.lng}
+                    </p>
                   </>
                 )}
 
@@ -203,3 +230,4 @@ function MechanicOwnerDashboard() {
 }
 
 export default MechanicOwnerDashboard;
+

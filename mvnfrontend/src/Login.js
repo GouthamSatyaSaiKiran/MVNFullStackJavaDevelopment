@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
 
 function Login({ setIsLoggedIn, setUserRole }) {
   const [form, setForm] = useState({ username: '', password: '', role: '' });
@@ -11,36 +10,36 @@ function Login({ setIsLoggedIn, setUserRole }) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post('http://localhost:8080/auth/login', {
-        email: form.username,
-        password: form.password,
-        role: form.role
-      });
+    const users = JSON.parse(localStorage.getItem('users')) || [];
 
-      // Assuming backend returns 200 OK with user role and success message
-      setIsLoggedIn(true);
-      setUserRole(form.role);
-      localStorage.setItem('userRole', form.role);
+    // Check if the user exists and credentials match
+    const matchedUser = users.find(
+      (user) =>
+        user.email === form.username &&
+        user.password === form.password &&
+        user.role === form.role
+    );
 
-      // Navigate based on role
-      if (form.role === 'VehicleOwner') {
-        navigate('/vehicleowner');
-      } else if (form.role === 'FuelOwner') {
-        navigate('/fuelownerdashboard');
-      } else if (form.role === 'Mechanic') {
-        navigate('/mechanicownerdashboard');
-      }
+    if (!matchedUser) {
+      setError('Invalid user or credentials. Please sign up.');
+      return;
+    }
 
-    } catch (err) {
-      if (err.response && err.response.status === 401) {
-        setError('Invalid credentials. Please try again.');
-      } else {
-        setError('Login failed. Please try later.');
-      }
+    // Store role and mark as logged in
+    localStorage.setItem('userRole', form.role);
+    setIsLoggedIn(true);
+    setUserRole(form.role);
+
+    // Navigate based on role
+    if (form.role === 'VehicleOwner') {
+      navigate('/vehicleowner');
+    } else if (form.role === 'FuelOwner') {
+      navigate('/fuelownerdashboard');
+    } else if (form.role === 'Mechanic') {
+      navigate('/mechanicownerdashboard');
     }
   };
 
@@ -73,14 +72,17 @@ function Login({ setIsLoggedIn, setUserRole }) {
           <option value="Mechanic">Mechanic</option>
         </select>
         <button type="submit">Login</button>
+        <div style={{ textAlign: "center", marginTop: "10px" }}>
+        <Link to="/forgot" style={{ fontSize: "14px", color: "#007bff", textDecoration: "none" }}>
+          Forgot Password?
+        </Link>
+        </div>
       </form>
-      <div style={{ textAlign: 'center', marginTop: '15px' }}>
-        <p>
-          <Link to="/forgot-password">Forgot Password?</Link>
-        </p>
-        <p>
-          Not yet registered? <Link to="/signup">SignUp</Link>
-        </p>
+      <div style={{ textAlign: "center", marginTop: "15px" }}>
+        Don't have an account?{" "}
+        <Link to="/signup" style={{ marginLeft: "5px", textDecoration: "none", color: "#007bff" }}>
+          Signup
+        </Link>
       </div>
     </div>
   );

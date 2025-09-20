@@ -12,7 +12,6 @@ function Footer() {
       </p>
       <p>
         <strong>Phone Number:</strong>{' '}
-        {/* <a href="tel:+1234567890">+1 (234) 567-890</a> */}
         <a href="tel:+9632587410">9632587410</a>
       </p>
       <p>©2025 Mobile Vehicle Needs. All rights reserved.</p>

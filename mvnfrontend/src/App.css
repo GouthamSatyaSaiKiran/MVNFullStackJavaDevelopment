@@ -9,31 +9,11 @@
 body {
   color: rgb(0, 0, 0);
   line-height: 1.6;
-  padding-top: 80px; /* Push content below sticky nav */
-  background: #e6f2ff; /* Light warm beige */
-}
-
-.card-link {
-  text-decoration: none;
-  color: inherit;
-}
-
-.carousel-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 2rem auto;
-  height: auto;
-  z-index: 1;
-}
-
-.carousel .slide img {
-  height: 400px;
-  object-fit: cover;
-}
-
-.carousel .legend {
-  background: rgba(0, 0, 0, 0.6);
-  font-size: 1.2rem;
+  padding-top: 80px; /* keep this for navbar spacing */
+  background: #e6f2ff;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* Sticky Navigation Bar */
@@ -41,7 +21,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #4f46e5; /* Purple/navy like your screenshot */
+  background: #4f46e5; 
   padding: 1rem 2rem;
   position: fixed;
   top: 0;
@@ -63,7 +43,6 @@ nav {
 #txt {
   width: 1000px;
   color: white;
-  left: 700px;
 }
 
 #t {
@@ -99,8 +78,8 @@ nav button:hover {
 
 /* Sections */
 section {
-  padding: 1.5rem 1rem;
-  max-width: 900px;
+  /*padding: 1.5rem 1rem;*/
+  /*max-width: 900px;*/
   margin: auto;
   text-align: center;
 }
@@ -133,6 +112,7 @@ section p {
 /* Card container */
 .card-container {
   display: flex;
+  justify-content: space-evenly;
   gap: 10px;
   padding: 0.5rem 1rem 1rem;
   max-width: 1200px;
@@ -162,7 +142,7 @@ section p {
 }
 
 .card .container {
-  padding: 16px;
+  padding: 10px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -170,24 +150,37 @@ section p {
 }
 
 .card h2 {
-  margin-bottom: 0.5rem;
+  margin: auto;
   font-size: 1.5rem;
 }
 
 .card p {
+  margin: 0;
   font-size: 1rem;
 }
 
-/* Footer */
-footer {
-  bottom: 0;
-  left: 0;
+.carousel-container {
+  margin: 20px auto;       
+  width: 100%;            
+  max-width: 1000px;      
+  height: 80vh;           
+  overflow: hidden;           
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+}
+
+.carousel-container img {
   width: 100%;
-  background: #4f46e5; /* Deep purple */
+  height: 80vh;           
+  object-fit: cover;      
+}
+
+footer {           
+  width: 100%;         
+  text-align: center;   
+  background: #4f46e5; 
   color: #fff;
-  text-align: center;
-  padding: 1.5rem 1rem;
-  z-index: 1000;
+  padding: 2rem 1rem;  
+  margin-top: 1rem; 
 }
 
 footer a {
@@ -309,7 +302,7 @@ body {
   background: #e6f2ff;
   color: #1e293b;
   min-height: 100vh;
-  padding: 40px;
+  /*padding: 40px;*/
 }
 
 .container {

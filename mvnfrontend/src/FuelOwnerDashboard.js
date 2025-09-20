@@ -96,74 +96,73 @@ function FuelOwnerDashboard() {
   const filteredFuelRequests = requests.filter(req => req.service === 'Fuel Delivery');
 
   return (
-    <div style={{ padding: '20px' }}>
-      {/* Stats Section */}
-      <div style={{ display: 'flex', marginBottom: '30px', marginTop: '50px' }}>
-        <div style={{ flex: '1', marginRight: '50px' }}>
-          <div style={styles.card}>
-            <h3>Fuel Type Stats</h3>
-            <select
-              value={timeFilter}
-              onChange={(e) => setTimeFilter(e.target.value)}
-              style={styles.select}
-            >
-              <option value="today">Today</option>
-              <option value="week">This Week</option>
-              <option value="month">This Month</option>
-            </select>
-
-            {getFuelTypeData().length === 0 ? (
-              <p style={{ marginTop: '40px', fontSize: '18px', color: '#888' }}>No Requests</p>
-            ) : (
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <PieChart width={260} height={260}>
-                  <Pie
-                    data={getFuelTypeData()}
-                    dataKey="value"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={80}
-                    label={({ name, value }) => `${name}: ${value}`}
-                  >
-                    {getFuelTypeData().map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                  <Legend verticalAlign="bottom" height={36} />
-                </PieChart>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Summary Section */}
-        <div style={{ flex: '1' }}>
-          <div style={{ ...styles.card, padding: '20px 50px' }}>
-            <h2 style={{ color: '#0f172a', marginBottom: '20px' }}>Completed Services Summary</h2>
-            <p><strong>Total:</strong> {completedStats.length}</p>
-            <p><strong>Today:</strong> {todayCount}</p>
-            <p><strong>This Week:</strong> {weekCount}</p>
-            <p><strong>This Month:</strong> {monthCount}</p>
-            <div style={{ marginTop: '15px' }}>
-              <h4>Fuel Type Breakdown (Liters)</h4>
-              {Object.keys(totalLiters).length === 0 ? (
-                <p style={{ color: '#888' }}>No Data</p>
-              ) : (
-                <ul style={{ paddingLeft: '20px', lineHeight: '1.8' }}>
-                  {Object.entries(totalLiters).map(([fuel, liters]) => (
-                    <li key={fuel}><strong>{fuel}:</strong> {liters.toFixed(2)} Liters</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
-        </div>
+    <div>
+     <h1 style={{ textAlign: 'center', marginTop: '50px', marginBottom: '10px' }}>Fuel Requests Summary</h1>
+      <div style={{ display: 'flex', gap: '30px', marginTop: '20px', marginBottom: '30px' }}>
+      <div style={{ flex: 1 }}>
+      <div style={{ ...styles.card, padding: '20px 50px' }}>
+        <h2 style={{ color: '#0f172a', marginBottom: '20px' }}>Total Fuel Services Summary</h2>
+        <p><strong>Total:</strong> {completedStats.length}</p>
+        <p><strong>Today:</strong> {todayCount}</p>
+        <p><strong>This Week:</strong> {weekCount}</p>
+        <p><strong>This Month:</strong> {monthCount}</p>
+      <div style={{ marginTop: '15px' }}>
+        <h4>Fuel Type Breakdown (Litres)</h4>
+        {Object.keys(totalLiters).length === 0 ? (
+          <p style={{ color: '#888' }}>No Data</p>
+        ) : (
+          <ul style={{ paddingLeft: '10px', lineHeight: '1.8', listStylePosition: 'inside' }}>
+            {Object.entries(totalLiters).map(([fuel, liters]) => (
+              <li key={fuel}><strong>{fuel}:</strong> {liters.toFixed(2)} Litres</li>
+            ))}
+          </ul>
+        )}
       </div>
+    </div>
+  </div>
 
-      {/* Requests Section */}
+  {/* Pie Chart Section */}
+  <div style={{ flex: 1 }}>
+    <div style={styles.card}>
+      <h3>Fuel Request Stats</h3>
+      <select
+        value={timeFilter}
+        onChange={(e) => setTimeFilter(e.target.value)}
+        style={styles.select}
+      >
+        <option value="today">Today</option>
+        <option value="week">This Week</option>
+        <option value="month">This Month</option>
+      </select>
+
+      {getFuelTypeData().length === 0 ? (
+        <p style={{ marginTop: '40px', fontSize: '18px', color: '#888' }}>No Requests</p>
+      ) : (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <PieChart width={260} height={260}>
+            <Pie
+              data={getFuelTypeData()}
+              dataKey="value"
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              label={({ name, value }) => `${name}: ${value}`}
+            >
+              {getFuelTypeData().map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend verticalAlign="bottom" height={36} />
+          </PieChart>
+        </div>
+      )}
+    </div>
+  </div>
+</div>
+
       <div>
-        <h1 style={{ textAlign: 'center' }}>Fuel Requests</h1>
+        <h2 style={{ textAlign: 'center' }}>Fuel Requests' Details</h2>
         {filteredFuelRequests.length === 0 ? (
           <p style={{ textAlign: 'center', color: '#666', marginTop: '20px' }}>
             No fuel delivery requests.
@@ -172,9 +171,17 @@ function FuelOwnerDashboard() {
           filteredFuelRequests.map(req => (
             <div key={req.id} style={styles.requestCard}>
               <h4>{req.name}</h4>
-              <p><strong>Fuel:</strong> {req.fuelType} - {req.fuelLiters} Liters</p>
+              <p><strong>Phone:</strong>{req.mobile}</p>
+              <p><strong>Fuel:</strong> {req.fuelType} - {req.quantity} Litres</p>
               <p><strong>Location:</strong> {req.location}</p>
               <p><strong>Status:</strong> {req.status}</p>
+
+              {req.status === 'Accepted' && (
+                <>
+                  <p><strong>ETA:</strong> {req.eta} Minutes</p>
+                  <p><strong>Delivery Location:</strong> Lat: {req.deliveryLocation.lat}, Lng: {req.deliveryLocation.lng}</p>
+                </>
+              )}
 
               {req.status === 'Pending' && (
                 <>

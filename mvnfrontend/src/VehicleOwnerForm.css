@@ -1,6 +1,7 @@
 .vehicle-owner-container {
   display: flex;
   gap: 30px;
+  padding: 20px;
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;

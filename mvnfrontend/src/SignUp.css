@@ -1,7 +1,7 @@
 /* Container to center the form */
 .signup-container {
   max-width: 400px;
-  margin: 0 auto;
+  margin: 80px auto 0 auto;
   background: #ffffff;
   padding: 2rem;
   border-radius: 8px;
