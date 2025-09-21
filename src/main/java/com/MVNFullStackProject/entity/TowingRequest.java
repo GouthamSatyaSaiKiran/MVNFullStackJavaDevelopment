@@ -1,0 +1,24 @@
+package com.MVNFullStackProject.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name="towing_request")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class TowingRequest {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String userEmail;
+    private String vehicleNumber;
+    private String areaName;
+    private String status = "Pending";
+
+    private LocalDateTime requestTime = LocalDateTime.now();
+}
